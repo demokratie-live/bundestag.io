@@ -6,8 +6,45 @@
   "license": "Apache2",
   "private": true,
   "scripts": {
-    "start": "node src/index.js"
+    "start": "babel-node src/index.js",
+    "dev":
+      "nodemon -L -e js,graphql src/index.js --exec \"node --require dotenv/config --require babel-register\"",
+    "imp": "babel-node src/import.js",
+    "diffs": "babel-node src/diffs.js",
+    "lint": "eslint ./src",
+    "build": "babel src -d dist -s",
+    "serve": "node dist/index.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@democracy-deutschland/dip21-scraper": "^0.1.0",
+    "apollo-engine": "^0.8.9",
+    "apollo-server-express": "^1.3.2",
+    "axios": "^0.18.0",
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "chalk": "^2.3.1",
+    "cron": "^1.3.0",
+    "dotenv": "^5.0.0",
+    "eslint": "^4.17.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "express": "^4.16.2",
+    "fs-extra": "^5.0.0",
+    "graphql": "^0.13.0",
+    "graphql-date": "^1.0.3",
+    "graphql-tools": "^2.20.2",
+    "jsondiffpatch": "^0.2.5",
+    "jsonfile": "^4.0.0",
+    "log": "^1.4.0",
+    "merge-graphql-schemas": "^1.5.0",
+    "moment": "^2.21.0",
+    "mongoose": "^5.0.3",
+    "mongoose-diff-history": "^1.2.0",
+    "nodemon": "^1.14.12",
+    "prettier": "^1.10.2",
+    "pretty-ms": "^3.1.0"
+  },
   "devDependencies": {}
 }

@@ -1,1 +1,5 @@
 node_modules
+diffs/*
+*.log
+.env
+/dist/*
