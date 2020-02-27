@@ -70,7 +70,7 @@
     "moment": "^2.21.0",
     "mongodb-migrations": "^0.8.5",
     "mongoosastic": "^4.4.1",
-    "mongoose": "^5.0.3",
+    "mongoose": "^5.7.5",
     "mongoose-diff-history": "^1.2.0",
     "nodemon": "1.17.5",
     "passport": "^0.4.0",
