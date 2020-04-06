@@ -26,7 +26,7 @@ class AuthDirective extends SchemaDirectiveVisitor {
 
     const fields = objectType.getFields();
 
-    Object.keys(fields).forEach(fieldName => {
+    Object.keys(fields).forEach((fieldName) => {
       const field = fields[fieldName];
       const { resolve = defaultFieldResolver } = field;
       field.resolve = async (...args) => {
@@ -43,14 +43,12 @@ class AuthDirective extends SchemaDirectiveVisitor {
         if (requiredRole === 'BACKEND') {
           if (
             !CONFIG.WHITELIST_DATA_SOURCES.some(
-              address =>
+              (address) =>
                 address.length >= 3 && context.req.connection.remoteAddress.indexOf(address) !== -1,
             )
           ) {
-            Log.warn(
-              `Connection to Bio blocked from ${
-                context.req.connection.remoteAddress
-              } for role 'BACKEND'`,
+            global.Log.warn(
+              `Connection to Bio blocked from ${context.req.connection.remoteAddress} for role 'BACKEND'`,
             );
             allow = false;
           }

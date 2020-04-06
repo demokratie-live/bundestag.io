@@ -2,16 +2,19 @@ import { CronTime } from 'cron';
 
 import CronJobModel from '../../models/CronJob';
 
-export const testCronTime = time => {
+export const testCronTime = (time?: string) => {
+  if (!time) {
+    return false;
+  }
   try {
-    const p = new CronTime(time); // eslint-disable-line no-unused-vars
+    new CronTime(time); // eslint-disable-line no-unused-vars
   } catch (e) {
     return false;
   }
   return true;
 };
 
-export const getCron = async ({ name }) => {
+export const getCron = async ({ name }: { name: string }) => {
   const cronjob = await CronJobModel.findOne({ name });
   if (!cronjob) {
     return {
@@ -27,8 +30,16 @@ export const getCron = async ({ name }) => {
   return cronjob;
 };
 
-export const setCronStart = async ({ name, startDate = new Date(), running = true }) => {
-  Log.info(`[Cronjob][${name}] started: ${startDate}`);
+export const setCronStart = async ({
+  name,
+  startDate = new Date(),
+  running = true,
+}: {
+  name: string;
+  startDate?: Date;
+  running?: boolean;
+}) => {
+  global.Log.info(`[Cronjob][${name}] started: ${startDate}`);
   await CronJobModel.findOneAndUpdate(
     { name },
     { lastStartDate: startDate, running },
@@ -41,8 +52,13 @@ export const setCronSuccess = async ({
   successDate = new Date(),
   successStartDate,
   running = false,
+}: {
+  name: string;
+  successDate?: Date;
+  successStartDate: Date;
+  running?: boolean;
 }) => {
-  Log.info(`[Cronjob][${name}] finished: ${successStartDate} - ${successDate}`);
+  global.Log.info(`[Cronjob][${name}] finished: ${successStartDate} - ${successDate}`);
   await CronJobModel.findOneAndUpdate(
     { name },
     { lastSuccessDate: successDate, lastSuccessStartDate: successStartDate, running },
@@ -54,9 +70,14 @@ export const setCronError = async ({
   name,
   errorDate = new Date(),
   running = false,
-  error = null,
+  error = undefined,
+}: {
+  name: string;
+  errorDate?: Date;
+  running?: boolean;
+  error?: string;
 }) => {
-  Log.error(`[Cronjob][${name}] errored: ${error}`);
+  global.Log.error(`[Cronjob][${name}] errored: ${error}`);
   await CronJobModel.findOneAndUpdate(
     { name },
     { lastErrorDate: errorDate, running, lastError: error },
@@ -68,8 +89,8 @@ export const resetCronSuccessStartDate = async () => {
   const CRON_NAME = 'resetCronSuccessStartDate';
   const startDate = new Date();
   const cron = await getCron({ name: CRON_NAME });
-  if (cron.running) {
-    Log.error(`[Cronjob][${CRON_NAME}] running still - skipping`);
+  if ('running' in cron && cron.running) {
+    global.Log.error(`[Cronjob][${CRON_NAME}] running still - skipping`);
     return;
   }
   await setCronStart({ name: CRON_NAME, startDate });

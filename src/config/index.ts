@@ -6,7 +6,7 @@ import cronjobConfig from './cronjobConfig';
 
 const requiredConfigs = {
   // No default Values
-  AUTH_JWT_SECRET: process.env.AUTH_JWT_SECRET,
+  AUTH_JWT_SECRET: process.env.AUTH_JWT_SECRET || '',
 };
 
 const recommendedConfigs = {

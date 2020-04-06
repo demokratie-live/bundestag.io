@@ -1,10 +1,29 @@
-import { Schema } from 'mongoose';
+import { Schema, Document } from 'mongoose';
 import diffHistory from 'mongoose-diff-history/diffHistory';
 
 import DeputyLink from './Deputy/Link';
 import DeputyFunctions from './Deputy/Functions';
 
-const DeputySchema = new Schema(
+export interface IDeputy extends Document {
+  URL: string;
+  webId: string;
+  imgURL?: string;
+  party?: string;
+  name: string;
+  job?: string;
+  office: string[];
+  links: any[];
+  biography: string[];
+  constituency?: string;
+  constituencyName?: string;
+  directCandidate: boolean;
+  functions: any[];
+  speechesURL?: string;
+  votesURL?: string;
+  publicationRequirement: string[];
+}
+
+const DeputySchema = new Schema<IDeputy>(
   {
     URL: { type: String, required: true, unique: true, index: true },
     webId: { type: String, required: true, unique: true, index: true },

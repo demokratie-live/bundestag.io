@@ -1,6 +1,16 @@
-import { Schema } from 'mongoose';
+import { Schema, Document } from 'mongoose';
 
-const CronJobSchema = new Schema(
+export interface ICronJob extends Document {
+  name: string;
+  lastStartDate?: Date;
+  lastErrorDate?: Date;
+  lastError?: string;
+  lastSuccessDate?: Date;
+  lastSuccessStartDate?: Date;
+  running: boolean;
+}
+
+const CronJobSchema = new Schema<ICronJob>(
   {
     name: { type: String, unique: true, index: true, required: true },
     lastStartDate: { type: Date, default: null },

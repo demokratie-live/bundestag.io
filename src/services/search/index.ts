@@ -19,7 +19,7 @@ const search = (req, res) => {
     },
     (err, result) => {
       if (err) {
-        Log.error(inspect(err));
+        global.Log.error(inspect(err));
       }
       res.send(result);
     },
