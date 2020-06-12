@@ -31,7 +31,7 @@
     "apollo-link-context": "^1.0.8",
     "apollo-link-http": "^1.5.4",
     "apollo-link-state": "^0.4.1",
-    "apollo-server-express": "^2.3.3",
+    "apollo-server-express": "^2.14.2",
     "axios": "^0.18.0",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.2",
