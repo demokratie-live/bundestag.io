@@ -1,5 +1,21 @@
 # Changelog
 
+### 0.1.20
+
+- [Fix] Upgrade named poll scraper
+
+### 0.1.19
+
+- [Add] start procedure scraper mutation
+
+### 0.1.18
+
+- [Fix] fix named polls matching
+
+### 0.1.17
+
+- [Fix] Upgrade @democracy-deutschland/bundestag.io-definitions to fix toggle named poll
+
 ### 0.1.16
 
 - [Fix] saving not named voteResults

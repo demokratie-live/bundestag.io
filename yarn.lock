@@ -223,10 +223,10 @@
     striptags "^3.1.1"
     x2js "^3.1.1"
 
-"@democracy-deutschland/bt-named-polls@0.1.1-0":
-  version "0.1.1-0"
-  resolved "https://registry.yarnpkg.com/@democracy-deutschland/bt-named-polls/-/bt-named-polls-0.1.1-0.tgz#8dc9e2e7cb6feb51c4d0d0592820ad46e529c7b4"
-  integrity sha512-mlXKc+dd4mtWydrWPx1tydlaKSCBAjp09isWLVr3jpLnTigr2DWq4vjR+HO/1YlI0aLl/eJ5cFQlsKAhTAjoiA==
+"@democracy-deutschland/bt-named-polls@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@democracy-deutschland/bt-named-polls/-/bt-named-polls-1.0.0.tgz#4bea44ac28a385469704ef632301d46ba920e2a8"
+  integrity sha512-DKY0xvz+IJLLsP173QjSH79ABQMIkMNL+Yth/nbJadgnM7K4YrZjhqfxVvdONBGf4Bk9J1525VF8FMXpULETfg==
   dependencies:
     chalk "^2.3.1"
     colors "^1.1.2"
@@ -243,10 +243,10 @@
     striptags "^3.1.1"
     x2js "^3.1.1"
 
-"@democracy-deutschland/bundestag.io-definitions@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@democracy-deutschland/bundestag.io-definitions/-/bundestag.io-definitions-1.0.1.tgz#404672beb5b13b85f1110f428a1786bd78c1874e"
-  integrity sha512-UJ9tkcilKyxEFqbs3VfdvXUAxo9Nat8Zl+1/MePt20LoR30wcAYX3vENFxLC3ADAzJytFXz5NvTQP87xcT4JnA==
+"@democracy-deutschland/bundestag.io-definitions@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@democracy-deutschland/bundestag.io-definitions/-/bundestag.io-definitions-1.0.2.tgz#5703052449ec618d60b58f46e2f18a8330630739"
+  integrity sha512-wdUnAuvN39xv+RvZWu/uWJWHOt1iDjFqFjE+5EaOBeEex6bmXpNiRCFVK25V9FfSXptjusj3FXxj2N4s5sqVKw==
   dependencies:
     typescript "^3.7.2"
 
@@ -270,10 +270,10 @@
     request-cookies "^1.1.0"
     x2js "^3.1.1"
 
-"@democracy-deutschland/scapacra-bt@1.0.26":
-  version "1.0.26"
-  resolved "https://registry.yarnpkg.com/@democracy-deutschland/scapacra-bt/-/scapacra-bt-1.0.26.tgz#3e58706a036622f501935a844df3c85910f8cc4a"
-  integrity sha512-gclxNCl44w2trNAm/WWPih6MrZ7n42oypjbbAX787gRyWyNntlfx3/GZlkB/EAM3Wst66fAp9TElE6XTtlZkjw==
+"@democracy-deutschland/scapacra-bt@1.0.28":
+  version "1.0.28"
+  resolved "https://registry.yarnpkg.com/@democracy-deutschland/scapacra-bt/-/scapacra-bt-1.0.28.tgz#8ce8cbcaf3306fd574b70b60bd5eee1817135f27"
+  integrity sha512-mxOf7ZqyeYArlH8OB6o6iMM3mCnQto6w7gVr+NNMz5sm1ae5hsJgD85LYge6OKMVJgeWqQutyHOQGRmtFfpDLw==
   dependencies:
     "@democracy-deutschland/scapacra" "1.0.6"
     "@types/axios" "^0.14.0"

@@ -1,5 +1,6 @@
 import { Scraper } from '@democracy-deutschland/scapacra';
 import { NamedPollScraper } from '@democracy-deutschland/scapacra-bt';
+import url from 'url';
 
 import {
   PROCEDURE as PROCEDURE_DEFINITIONS,
@@ -29,9 +30,16 @@ export default async () => {
       // "http://dipbt.bundestag.de:80/dip21/btd/19/010/1901038.pdf
       // The named poll scraper returns them like so:
       // http://dip21.bundestag.de/dip21/btd/19/010/1901038.pdf
-      const findSpotUrls = dataPackage.data.documents.map((document) =>
-        document.replace('http://dip21.bundestag.de/', 'http://dipbt.bundestag.de:80/'),
-      );
+      const findSpotUrls = dataPackage.data.documents.map(document => ({
+        'history.findSpotUrl': {
+          $regex: `.*${url.parse(document).path}.*`,
+        },
+      }));
+
+      if (findSpotUrls.length === 0) {
+        Log.warn(`[Cronjob][${CRON_NAME}] no documents on poll ${dataPackage.data.id}`);
+        return;
+      }
 
       let procedures;
       // Only match those which are not an Änderungsantrag
@@ -46,7 +54,7 @@ export default async () => {
       ) {
         // Find matching Procedures
         procedures = await Procedure.find({
-          'history.findSpotUrl': { $all: findSpotUrls },
+          $and: findSpotUrls,
           'history.decision': {
             $elemMatch: {
               type: PROCEDURE_DEFINITIONS.HISTORY.DECISION.TYPE.NAMENTLICHE_ABSTIMMUNG,
@@ -195,19 +203,21 @@ export default async () => {
             ? 'recommendedDecision'
             : 'mainDocument';
 
-        votingRecommendationEntrys.forEach((votingRecommendationEntry) => {
-          if (
-            votingRecommendationEntry.abstract.search(
-              PROCEDURE_DEFINITIONS.HISTORY.ABSTRACT.EMPFEHLUNG_VORLAGE_ANNAHME,
-            ) !== -1
-          ) {
-            customData.voteResults.votingRecommendation = true;
-          } else if (
-            votingRecommendationEntry.abstract.search(
-              PROCEDURE_DEFINITIONS.HISTORY.ABSTRACT.EMPFEHLUNG_VORLAGE_ABLEHNUNG,
-            ) !== -1
-          ) {
-            customData.voteResults.votingRecommendation = false;
+        votingRecommendationEntrys.forEach(votingRecommendationEntry => {
+          if (votingRecommendationEntry.abstract) {
+            if (
+              votingRecommendationEntry.abstract.search(
+                PROCEDURE_DEFINITIONS.HISTORY.ABSTRACT.EMPFEHLUNG_VORLAGE_ANNAHME,
+              ) !== -1
+            ) {
+              customData.voteResults.votingRecommendation = true;
+            } else if (
+              votingRecommendationEntry.abstract.search(
+                PROCEDURE_DEFINITIONS.HISTORY.ABSTRACT.EMPFEHLUNG_VORLAGE_ABLEHNUNG,
+              ) !== -1
+            ) {
+              customData.voteResults.votingRecommendation = false;
+            }
           }
         });
 
@@ -272,8 +282,8 @@ export default async () => {
         );
       });
     }
+    await setCronSuccess({ name: CRON_NAME, successStartDate: startDate });
   } catch (error) {
     await setCronError({ name: CRON_NAME, error: JSON.stringify(error) });
   }
-  await setCronSuccess({ name: CRON_NAME, successStartDate: startDate });
 };
