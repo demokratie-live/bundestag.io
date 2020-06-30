@@ -64,14 +64,10 @@ const main = async () => {
   graphql.applyMiddleware({ app: server, path: CONFIG.GRAPHQL_PATH });
 
   // Start Server
-  server.listen({ port: CONFIG.PORT }, err => {
-    if (err) {
-      Log.error(err);
-    } else {
-      Log.warn(
-        `🚀  Bundestag.io Server ready at http://localhost:${CONFIG.PORT}${CONFIG.GRAPHQL_PATH}`,
-      );
-    }
+  server.listen({ port: CONFIG.PORT }, () => {
+    global.Log.warn(
+      `🚀  Bundestag.io Server ready at http://localhost:${CONFIG.PORT}${CONFIG.GRAPHQL_PATH}`,
+    );
   });
 
   // Start CronJobs (Bundestag Importer)
@@ -86,6 +82,6 @@ const main = async () => {
   try {
     await main();
   } catch (error) {
-    Log.error(error.stack);
+    global.Log.error(error.stack);
   }
 })();

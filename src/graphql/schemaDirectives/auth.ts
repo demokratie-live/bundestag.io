@@ -26,7 +26,7 @@ class AuthDirective extends SchemaDirectiveVisitor {
 
     const fields = objectType.getFields();
 
-    Object.keys(fields).forEach(fieldName => {
+    Object.keys(fields).forEach((fieldName) => {
       const field = fields[fieldName];
       const { resolve = defaultFieldResolver } = field;
       field.resolve = async (...args) => {

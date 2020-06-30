@@ -11,12 +11,12 @@ export default async () => {
   const startDate = new Date();
   const cron = await getCron({ name: CRON_NAME });
   if (cron.running) {
-    Log.error(`[Cronjob][${CRON_NAME}] running still - skipping`);
+    global.Log.error(`[Cronjob][${CRON_NAME}] running still - skipping`);
     return;
   }
   await setCronStart({ name: CRON_NAME, startDate });
   try {
-    await Scraper.scrape(new DeputyProfileScraper(), async dataPackage => {
+    await Scraper.scrape(new DeputyProfileScraper(), async (dataPackage) => {
       // Ignore those which have no webid (ausgeschieden)
       if (!dataPackage.data.id) {
         return null;

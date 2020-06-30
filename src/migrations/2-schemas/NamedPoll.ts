@@ -1,11 +1,27 @@
-import { Schema } from 'mongoose';
+import { Schema, Document } from 'mongoose';
 import diffHistory from 'mongoose-diff-history/diffHistory';
 
 import NamedPollVotes from './NamedPoll/Votes';
 import NamedPollSpeech from './NamedPoll/Speech';
 import NamedPollMedia from './NamedPoll/Media';
 
-const NamedPollSchema = new Schema(
+export interface INamedPoll extends Document {
+  URL?: string;
+  webId: string;
+  procedureId?: string;
+  date?: Date;
+  title: string;
+  description: string;
+  detailedDescription: string;
+  documents: string[];
+  deputyVotesURL: string;
+  plenarProtocolURL: string;
+  votes: any;
+  media: any;
+  speeches: any[];
+}
+
+const NamedPollSchema = new Schema<INamedPoll>(
   {
     URL: { type: String, default: null },
     webId: { type: String, required: true, unique: true, index: true },

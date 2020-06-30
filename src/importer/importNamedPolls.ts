@@ -18,12 +18,12 @@ export default async () => {
   const startDate = new Date();
   const cron = await getCron({ name: CRON_NAME });
   if (cron.running) {
-    Log.error(`[Cronjob][${CRON_NAME}] running still - skipping`);
+    global.Log.error(`[Cronjob][${CRON_NAME}] running still - skipping`);
     return;
   }
   await setCronStart({ name: CRON_NAME, startDate });
   try {
-    await Scraper.scrape(new NamedPollScraper(), async dataPackage => {
+    await Scraper.scrape(new NamedPollScraper(), async (dataPackage) => {
       let procedureId = null;
       // TODO unify
       // currently the dip21 scraper returns document urls like so:
@@ -65,14 +65,14 @@ export default async () => {
 
         // We did find too many
         if (procedures.length > 1) {
-          Log.error(
+          global.Log.error(
             `[Cronjob][${CRON_NAME}] duplicate Procedure match on: ${dataPackage.meta.url}`,
           );
         }
 
         // We did not find anything
         if (procedures.length === 0) {
-          Log.warn(`[Cronjob][${CRON_NAME}] no Procedure match on: ${dataPackage.meta.url}`);
+          global.Log.warn(`[Cronjob][${CRON_NAME}] no Procedure match on: ${dataPackage.meta.url}`);
         }
 
         // We have exactly one match and can assign the procedureId
@@ -127,7 +127,7 @@ export default async () => {
       if (procedureId) {
         const customData = {
           voteResults: {
-            partyVotes: votes.parties.map(partyVote => {
+            partyVotes: votes.parties.map((partyVote) => {
               const main = [
                 {
                   decision: 'YES',
@@ -274,8 +274,8 @@ export default async () => {
     ]);
     if (duplicateMatches.length !== 0) {
       // TODO clarify this should be an error - matching should be better
-      duplicateMatches.forEach(duplicate => {
-        Log.error(
+      duplicateMatches.forEach((duplicate) => {
+        global.Log.error(
           `[Cronjob][${CRON_NAME}] Duplicate Matches(${duplicate.count}) on procedureId ${
             duplicate._id // eslint-disable-line no-underscore-dangle
           } for NamedPolls: ${duplicate.namedpolls.join(',')}`,

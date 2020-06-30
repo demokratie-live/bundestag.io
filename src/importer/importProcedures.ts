@@ -18,13 +18,13 @@ export const CRON_NAME = 'Procedures';
 const scraper = new Scraper({ baseUrl: 'dip21.bundestag.de' });
 let cronStart = null;
 
-const parseDate = input => {
+const parseDate = (input) => {
   const parts = input.match(/(\d+)/g);
   // note parts[1]-1
   return new Date(Date.UTC(parts[2], parts[1] - 1, parts[0]));
 };
 
-const ensureArray = element => {
+const ensureArray = (element) => {
   if (element) {
     if (!_.isArray(element)) {
       return [element];
@@ -60,7 +60,7 @@ const saveProcedure = async ({ procedureData }) => {
         e.BESCHLUSS = [e.BESCHLUSS];
       }
       if (e.BESCHLUSS.length > 0) {
-        flow.decision = e.BESCHLUSS.map(beschluss => ({
+        flow.decision = e.BESCHLUSS.map((beschluss) => ({
           page: beschluss.BESCHLUSSSEITE || undefined,
           tenor: beschluss.BESCHLUSSTENOR || undefined,
           document: beschluss.BEZUGSDOKUMENT || undefined,
@@ -122,7 +122,7 @@ const saveProcedure = async ({ procedureData }) => {
     legalValidity: ensureArray(procedureData.VORGANG.INKRAFTTRETEN),
     tags: ensureArray(procedureData.VORGANG.SCHLAGWORT),
     subjectGroups: ensureArray(procedureData.VORGANG.SACHGEBIET),
-    importantDocuments: ensureArray(procedureData.VORGANG.WICHTIGE_DRUCKSACHE || []).map(doc => ({
+    importantDocuments: ensureArray(procedureData.VORGANG.WICHTIGE_DRUCKSACHE || []).map((doc) => ({
       editor: doc.DRS_HERAUSGEBER,
       number: doc.DRS_NUMMER,
       type: doc.DRS_TYP,
@@ -150,24 +150,28 @@ let startDate;
 const logStartDataProgress = async ({ sum }) => {
   startDate = new Date();
   linksSum = sum;
-  Log.info(`[Cronjob][${CRON_NAME}] Data-Process started - ${startDate} - ${linksSum} Links found`);
+  global.Log.info(
+    `[Cronjob][${CRON_NAME}] Data-Process started - ${startDate} - ${linksSum} Links found`,
+  );
 };
 
 const logFinished = () => {
   const end = Date.now();
   const elapsed = end - cronStart;
-  Log.info(`[Cronjob][${CRON_NAME}] Data-Process finished - ${prettyMs(_.toInteger(elapsed))}`);
+  global.Log.info(
+    `[Cronjob][${CRON_NAME}] Data-Process finished - ${prettyMs(_.toInteger(elapsed))}`,
+  );
 };
 
 const logError = ({ error }) => {
-  Log.error(`[Cronjob][${CRON_NAME}] error: ${JSON.stringify(error)}`);
+  global.Log.error(`[Cronjob][${CRON_NAME}] error: ${JSON.stringify(error)}`);
 };
 
 const cronTask = async () => {
   cronStart = new Date();
   const cron = await getCron({ name: CRON_NAME });
   if (cron.running) {
-    Log.error(`[Cronjob][${CRON_NAME}] running still - skipping`);
+    global.Log.error(`[Cronjob][${CRON_NAME}] running still - skipping`);
     return;
   }
   await setCronStart({ name: CRON_NAME, startDate: cronStart });
@@ -209,7 +213,7 @@ const cronTask = async () => {
 
       await setCronSuccess({ name: CRON_NAME, successStartDate: cronStart });
     })
-    .catch(async error => {
+    .catch(async (error) => {
       await setCronError({ name: CRON_NAME, error: JSON.stringify(error) });
       logFinished();
     });

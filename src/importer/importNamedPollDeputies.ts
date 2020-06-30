@@ -11,12 +11,15 @@ export default async () => {
   const startDate = new Date();
   const cron = await getCron({ name: CRON_NAME });
   if (cron.running) {
-    Log.error(`[Cronjob][${CRON_NAME}] running still - skipping`);
+    global.Log.error(`[Cronjob][${CRON_NAME}] running still - skipping`);
     return;
   }
   await setCronStart({ name: CRON_NAME, startDate });
   try {
-    await Scraper.scrape(new NamedPollDeputyScraper(), async dataPackage => {
+    await Scraper.scrape(new NamedPollDeputyScraper(), async (dataPackage) => {
+      if (!dataPackage || !dataPackage.data) {
+        return;
+      }
       // Construct Database object
       const namedPoll = { webId: dataPackage.data.id };
       // Add webId field, Remove id field
@@ -49,7 +52,7 @@ export default async () => {
         { upsert: true },
       );
 
-      return null;
+      return;
     });
   } catch (error) {
     await setCronError({ name: CRON_NAME, error: JSON.stringify(error) });

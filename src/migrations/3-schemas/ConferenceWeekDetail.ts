@@ -1,9 +1,21 @@
-import { Schema } from 'mongoose';
+import { Schema, Document } from 'mongoose';
 import diffHistory from 'mongoose-diff-history/diffHistory';
 
 import Session from './ConferenceWeekDetail/Session';
 
-const ConferenceWeekDetailSchema = new Schema(
+export interface IConferenceWeekDetail extends Document {
+  URL?: string;
+  id: string;
+  previousYear?: number;
+  previousWeek?: number;
+  thisYear: number;
+  thisWeek: number;
+  nextYear?: number;
+  nextWeek?: number;
+  sessions: any[];
+}
+
+const ConferenceWeekDetailSchema = new Schema<IConferenceWeekDetail>(
   {
     URL: { type: String, default: null },
     id: { type: String, required: true, unique: true, index: true },

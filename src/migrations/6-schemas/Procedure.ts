@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { Schema, Document as MDocument } from 'mongoose';
 import mongoosastic from 'mongoosastic';
 import diffHistory from 'mongoose-diff-history/diffHistory';
 
@@ -8,7 +8,41 @@ import PartyVotes from './../1-schemas/Procedure/PartyVotes';
 
 import CONFIG from '../../config';
 
-const ProcedureSchema = new Schema(
+export interface IProcedure extends MDocument {
+  procedureId: string;
+  type: string;
+  period: number;
+  title: string;
+  currentStatus?: string;
+  signature?: string;
+  gestOrderNumber?: string;
+  approvalRequired?: string[];
+  euDocNr?: string;
+  abstract?: string;
+  promulgation: string[];
+  legalValidity: string[];
+  tags: string[];
+  subjectGroups: string[];
+  importantDocuments: any[];
+  history?: any;
+  voteDate?: Date;
+  voteEnd?: Date;
+  customData: {
+    title?: string;
+    voteResults?: {
+      yes: number;
+      no: number;
+      abstination: number;
+      notVoted?: number;
+      decisionText?: string;
+      votingDocument: 'mainDocument' | 'recommendedDecision';
+      votingRecommendation?: boolean;
+      partyVotes: any;
+    };
+  };
+}
+
+const ProcedureSchema = new Schema<IProcedure>(
   {
     procedureId: {
       type: String,
