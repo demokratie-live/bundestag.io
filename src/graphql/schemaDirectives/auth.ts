@@ -2,24 +2,32 @@
 /* eslint no-param-reassign: [0] */
 
 import { SchemaDirectiveVisitor } from 'graphql-tools';
-import { defaultFieldResolver } from 'graphql';
-
-import CONFIG from '../../config';
+import {
+  defaultFieldResolver,
+  GraphQLObjectType,
+  GraphQLField,
+  GraphQLInterfaceType,
+} from 'graphql';
 
 class AuthDirective extends SchemaDirectiveVisitor {
-  visitObject(type) {
+  visitObject(type: GraphQLObjectType) {
     this.ensureFieldsWrapped(type);
     type._requiredAuthRole = this.args.requires;
   }
   // Visitor methods for nested types like fields and arguments
   // also receive a details object that provides information about
   // the parent and grandparent types.
-  visitFieldDefinition(field, details) {
+  visitFieldDefinition(
+    field: GraphQLField<any, any>,
+    details: {
+      objectType: GraphQLObjectType | GraphQLInterfaceType;
+    },
+  ) {
     this.ensureFieldsWrapped(details.objectType);
     field._requiredAuthRole = this.args.requires;
   }
 
-  ensureFieldsWrapped(objectType) {
+  ensureFieldsWrapped(objectType: GraphQLObjectType | GraphQLInterfaceType) {
     // Mark the GraphQLObjectType object to avoid re-wrapping:
     if (objectType._authFieldsWrapped) return;
     objectType._authFieldsWrapped = true;
@@ -45,10 +53,8 @@ class AuthDirective extends SchemaDirectiveVisitor {
             !context.req.headers['bio-auth-token'] ||
             context.req.headers['bio-auth-token'] !== process.env.BIO_EDIT_TOKEN
           ) {
-            Log.warn(
-              `Connection to Bio blocked from ${
-                context.req.connection.remoteAddress
-              } for role 'BACKEND'`,
+            global.Log.warn(
+              `Connection to Bio blocked from ${context.req.connection.remoteAddress} for role 'BACKEND'`,
             );
             allow = false;
           }

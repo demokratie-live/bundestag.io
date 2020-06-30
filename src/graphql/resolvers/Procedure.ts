@@ -112,9 +112,7 @@ export default {
       if (IDs) {
         match = { ...match, procedureId: { $in: IDs } };
       }
-      return ProcedureModel.find(match)
-        .skip(offset)
-        .limit(limit);
+      return ProcedureModel.find(match).skip(offset).limit(limit);
     },
 
     allProcedures: async (
@@ -280,7 +278,7 @@ export default {
           ...sumResults,
         };
 
-        votingRecommendationEntrys.forEach(votingRecommendationEntry => {
+        votingRecommendationEntrys.forEach((votingRecommendationEntry) => {
           if (votingRecommendationEntry.abstract) {
             if (
               votingRecommendationEntry.abstract.search(
@@ -312,7 +310,7 @@ export default {
   },
 
   Procedure: {
-    bioUpdateAt: async procedure => {
+    bioUpdateAt: async (procedure) => {
       const h = await History.findOne({ collectionId: procedure }, { createdAt: 1 }).sort({
         createdAt: -1,
       });
@@ -322,9 +320,9 @@ export default {
       return null;
     },
 
-    currentStatusHistory: async procedure => {
+    currentStatusHistory: async (procedure) => {
       const { _id } = procedure;
-      const history = await diffHistory.getDiffs('Procedure', _id).then(histories =>
+      const history = await diffHistory.getDiffs('Procedure', _id).then((histories) =>
         histories.reduce((prev, version) => {
           const cur = prev;
           if (version.diff.currentStatus) {
@@ -338,10 +336,10 @@ export default {
       );
       return history;
     },
-    namedVote: procedure => {
-      const namedVote = procedure.history.some(h => {
+    namedVote: (procedure) => {
+      const namedVote = procedure.history.some((h) => {
         if (h.decision) {
-          return h.decision.some(decision => {
+          return h.decision.some((decision) => {
             if (
               decision.type ===
                 PROCEDURE_DEFINITIONS.HISTORY.DECISION.TYPE.NAMENTLICHE_ABSTIMMUNG &&
@@ -358,7 +356,7 @@ export default {
       });
       return namedVote;
     },
-    sessions: async procedure =>
+    sessions: async (procedure) =>
       ConferenceWeekDetail.aggregate([
         { $unwind: '$sessions' },
         { $addFields: { session: '$sessions' } },

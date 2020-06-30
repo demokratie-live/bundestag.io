@@ -85,17 +85,4 @@ export const setCronError = async ({
   );
 };
 
-export const resetCronSuccessStartDate = async () => {
-  const CRON_NAME = 'resetCronSuccessStartDate';
-  const startDate = new Date();
-  const cron = await getCron({ name: CRON_NAME });
-  if ('running' in cron && cron.running) {
-    global.Log.error(`[Cronjob][${CRON_NAME}] running still - skipping`);
-    return;
-  }
-  await setCronStart({ name: CRON_NAME, startDate });
-  await CronJobModel.updateMany({}, { lastSuccessStartDate: new Date(0) });
-  await setCronSuccess({ name: CRON_NAME, successStartDate: startDate });
-};
-
 export const resetCronRunningState = async () => CronJobModel.updateMany({}, { running: false });
