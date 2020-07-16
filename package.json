@@ -63,7 +63,7 @@
     "jsondiffpatch": "^0.2.5",
     "jsonfile": "^4.0.0",
     "jsonwebtoken": "^8.3.0",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.19",
     "log": "^1.4.0",
     "material-ui": "^1.0.0-beta.41",
     "merge-graphql-schemas": "^1.5.0",
