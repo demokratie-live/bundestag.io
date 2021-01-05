@@ -23,7 +23,7 @@
     "@democracy-deutschland/bundestag.io-definitions": "1.0.2",
     "@democracy-deutschland/bundestagio-common": "^0.1.2",
     "apollo-server-express": "^2.3.3",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "eslint": "^7.4.0",
