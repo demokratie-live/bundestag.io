@@ -31,7 +31,7 @@
     "express-status-monitor": "^1.2.3",
     "graphql": "^15.2.0",
     "graphql-date": "^1.0.3",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.21",
     "merge-graphql-schemas": "^1.5.0",
     "mongoose": "^5.9.24",
     "mongoose-diff-history": "^2.1.0",
